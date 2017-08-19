@@ -1,0 +1,28 @@
+{
+  "name": "bh-realdata",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "miharrin",
+  "contributors": [],
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "express-ws": "^3.0.0",
+    "iojs": "^1.0.0",
+    "jquery": "^3.2.1",
+    "socket.io": "^2.0.3"
+  },
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "description": ""
+}

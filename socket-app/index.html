@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html
+    <head>
+        
+    </head>
+    <body>
+        <script> 
+            var ws = new WebSocket("ws://localhost:4200");
+            ws.onmessage = function (event) {
+                console.log(event.data);
+            }
+</script>
+        
+    </body>
+   
+</html>
