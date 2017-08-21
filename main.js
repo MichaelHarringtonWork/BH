@@ -125,4 +125,5 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
 	}
     );
   }
+  }
 );
