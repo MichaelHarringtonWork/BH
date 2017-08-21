@@ -62,6 +62,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
       this.value1 = ko.observable(0);
       this.value2 = ko.observable(0);
       this.value5 = ko.observable(0);
+      this.value7 = ko.observable(80);
       this.thresholdValues = [{max: 33}, {max: 67}, {}]
 		  
 		      this.gauge4OptionChange  =  function(e, data) {
@@ -113,7 +114,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
 //
 //          self.pieSeriesValue(pieSeries);
 //      }
-    }
+     }
 
     $(document).ready(
 	function() {
