@@ -14,12 +14,13 @@ var data = null;
 var currentIndex = 0;
 var numElems = 0;
 
+//function that broadcasts the JSON data to all participants connected
 function sendData(data) {
     wss.broadcast(JSON.stringify(data));
 }
 
 function sendUpdate() {
-    if (currentIndex == numElems-1) {
+    if (currentIndex == numElems - 1) {
         currentIndex = 0;
     } else {
         currentIndex++

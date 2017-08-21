@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple JET Page</title>
+        <title>Oracle Jet - The Bloodhound Dashboard Project</title>
         <meta charset="UTF-8">
-
         <!-- This is the main css file for the default Alta theme -->
         <link id="jetCss" rel="stylesheet" href="css/libs/oj/v1.1.2/alta/oj-alta-min.css" type="text/css"/>
 
@@ -11,151 +10,207 @@
         <script data-main="js/main" src="js/libs/require/require.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
-      google.charts.load('current', {'packages':['gauge']});
-      google.charts.setOnLoadCallback(drawChart);
-      google.charts.setOnLoadCallback(drawSpeedometer);
+            google.charts.load('current', {'packages': ['gauge']});
+            google.charts.setOnLoadCallback(drawChart);
+            google.charts.setOnLoadCallback(drawSpeedometer);
 
-function drawSpeedometer() {
-    
-    var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['MPH', 0]
-        ]);
-    
-    var speedometeroptions = {
-          width: 600, height: 320,
-          redFrom: 90, redTo: 100,
-          yellowFrom:75, yellowTo: 90,
-          minorTicks: 5
-        };
-        
-        var speedometer = new google.visualization.Gauge(document.getElementById('speedometer_div'));
+            function drawSpeedometer() {
 
-google.visualization.events.addListener(speedometer, 'ready', function () {
-$('#speedometer_div circle:nth-child(2)').attr('fill', 'black'); //background
-$('#speedometer_div circle:nth-child(2)').attr('stroke', 'gray');
-$('#speedometer_div circle:nth-child(2)').attr('stroke-width', '2');
-$('#speedometer_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
-$('#speedometer_div circle:nth-child(1)').attr('stroke-width', '1');
-$('#speedometer_div circle:nth-child(1)').attr('stroke', 'gray');
-$('#speedometer_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
-$('#speedometer_div circle:nth-child(3)').attr('stroke', 'white');
-$('#speedometer_div text').attr('fill', 'white');
-$('#speedometer_div text:nth-child(1)').attr('fill', 'white');
-$('#speedometer_div text').attr('left');
-});
+                var data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['MPH', 0]
+                ]);
 
-		var currentSpeed = 0;
-		var speedoUpdating = false;
-        speedometer.draw(data, speedometeroptions);
+                var speedometeroptions = {
+                    width: 600, height: 320,
+                    redFrom: 90, redTo: 100,
+                    yellowFrom: 75, yellowTo: 90,
+                    minorTicks: 5
+                };
 
-        setInterval(function() {
-			if (!speedoUpdating) {
-				speedoUpdating = true;
-				data.setValue(0, 1, currentSpeed);
-				speedometer.draw(data, speedometeroptions);
-				speedoUpdating = false;
-			}
-		  
-        }, 100);
-		
-		var ws = new WebSocket("ws://localhost:4200");
-		ws.onmessage = function (event) {
-			var newdata = JSON.parse(event.data);
-			currentSpeed = newdata.MPH;
-		}
-        
-}
+                var speedometer = new google.visualization.Gauge(document.getElementById('speedometer_div'));
 
-function drawAJNLGauge() {
+                google.visualization.events.addListener(speedometer, 'ready', function () {
+                    $('#speedometer_div circle:nth-child(2)').attr('fill', 'black'); //background
+                    $('#speedometer_div circle:nth-child(2)').attr('stroke', 'gray');
+                    $('#speedometer_div circle:nth-child(2)').attr('stroke-width', '2');
+                    $('#speedometer_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
+                    $('#speedometer_div circle:nth-child(1)').attr('stroke-width', '1');
+                    $('#speedometer_div circle:nth-child(1)').attr('stroke', 'gray');
+                    $('#speedometer_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
+                    $('#speedometer_div circle:nth-child(3)').attr('stroke', 'white');
+                    $('#speedometer_div text').attr('fill', 'white');
+                    $('#speedometer_div text:nth-child(1)').attr('fill', 'white');
+                    $('#speedometer_div text').attr('left');
+                });
 
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['AJ', 100]
-        ]);
+                var currentSpeed = 0;
+                var speedoUpdating = false;
+                speedometer.draw(data, speedometeroptions);
 
-        var ajnloptions = {
-          width: 400, height: 120,
-          minorTicks: 5
-        };
+                setInterval(function () {
+                    if (!speedoUpdating) {
+                        speedoUpdating = true;
+                        data.setValue(0, 1, currentSpeed);
+                        speedometer.draw(data, speedometeroptions);
+                        speedoUpdating = false;
+                    }
 
-        var ajnl = new google.visualization.Gauge(document.getElementById('ajnl_div'));
+                }, 100);
 
-google.visualization.events.addListener(ajnl, 'ready', function () {
-$('#ajnl_div circle:nth-child(2)').attr('fill', 'black'); //background
-$('#ajnl_div circle:nth-child(2)').attr('stroke', 'gray');
-$('#ajnl_div circle:nth-child(2)').attr('stroke-width', '2');
-$('#ajnl_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
-$('#ajnl_div circle:nth-child(1)').attr('stroke-width', '1');
-$('#ajnl_div circle:nth-child(1)').attr('stroke', 'gray');
-$('#ajnl_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
-$('#ajnl_div circle:nth-child(3)').attr('stroke', 'white');
-$('#ajnl_div text').attr('fill', 'white');
-$('#ajnl_div text:nth-child(1)').attr('fill', 'white');
-$('#ajnl_div text').attr('left');
-$('#ajnl_div path:nth-child(2)').attr('fill', '#FC6C05');
-$('#ajnl_div path:nth-child(2)').attr('stroke', 'white');
-$('#ajnl_div path:nth-child(2)').attr('fill-opacity', '2');
-});
+                var ws = new WebSocket("ws://localhost:4200");
+                ws.onmessage = function (event) {
+                    var newdata = JSON.parse(event.data);
+                    currentSpeed = newdata.MPH;
+                }
 
-        ajnl.draw(data, ajnloptions);
+            }
 
-      }
+            function drawAJNLGauge() {
 
-      function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['AJ', 100]
+                ]);
 
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['FUEL', 100]
-        ]);
+                var ajnloptions = {
+                    width: 400, height: 120,
+                    minorTicks: 5
+                };
 
-        var fueloptions = {
-          width: 400, height: 120,
-          redFrom: 0, redTo: 10,
-          yellowFrom:10, yellowTo: 25,
-          minorTicks: 5
-        };
+                var ajnl = new google.visualization.Gauge(document.getElementById('ajnl_div'));
 
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+                google.visualization.events.addListener(ajnl, 'ready', function () {
+                    $('#ajnl_div circle:nth-child(2)').attr('fill', 'black'); //background
+                    $('#ajnl_div circle:nth-child(2)').attr('stroke', 'gray');
+                    $('#ajnl_div circle:nth-child(2)').attr('stroke-width', '2');
+                    $('#ajnl_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
+                    $('#ajnl_div circle:nth-child(1)').attr('stroke-width', '1');
+                    $('#ajnl_div circle:nth-child(1)').attr('stroke', 'gray');
+                    $('#ajnl_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
+                    $('#ajnl_div circle:nth-child(3)').attr('stroke', 'white');
+                    $('#ajnl_div text').attr('fill', 'white');
+                    $('#ajnl_div text:nth-child(1)').attr('fill', 'white');
+                    $('#ajnl_div text').attr('left');
+                    $('#ajnl_div path:nth-child(2)').attr('fill', '#FC6C05');
+                    $('#ajnl_div path:nth-child(2)').attr('stroke', 'white');
+                    $('#ajnl_div path:nth-child(2)').attr('fill-opacity', '2');
+                });
 
-google.visualization.events.addListener(chart, 'ready', function () {
-$('#chart_div circle:nth-child(2)').attr('fill', 'black'); //background
-$('#chart_div circle:nth-child(2)').attr('stroke', 'gray');
-$('#chart_div circle:nth-child(2)').attr('stroke-width', '2');
-$('#chart_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
-$('#chart_div circle:nth-child(1)').attr('stroke-width', '1');
-$('#chart_div circle:nth-child(1)').attr('stroke', 'gray');
-$('#chart_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
-$('#chart_div circle:nth-child(3)').attr('stroke', 'white');
-$('#chart_div text').attr('fill', 'white');
-$('#chart_div text:nth-child(1)').attr('fill', 'white');
-$('#chart_div text').attr('left');
-$('#chart_div path:nth-child(2)').attr('fill', '#FC6C05');
-$('#chart_div path:nth-child(2)').attr('stroke', 'white');
-$('#chart_div path:nth-child(2)').attr('fill-opacity', '2');
-});
+                ajnl.draw(data, ajnloptions);
 
-        chart.draw(data, fueloptions);
+            }
 
-      }
-    </script>
+            function drawChart() {
+
+                var data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['FUEL', 100]
+                ]);
+
+                var fueloptions = {
+                    width: 400, height: 120,
+                    redFrom: 0, redTo: 10,
+                    yellowFrom: 10, yellowTo: 25,
+                    minorTicks: 5
+                };
+
+                var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+                google.visualization.events.addListener(chart, 'ready', function () {
+                    $('#chart_div circle:nth-child(2)').attr('fill', 'black'); //background
+                    $('#chart_div circle:nth-child(2)').attr('stroke', 'gray');
+                    $('#chart_div circle:nth-child(2)').attr('stroke-width', '2');
+                    $('#chart_div circle:nth-child(1)').attr('fill', 'black'); //outer-ring
+                    $('#chart_div circle:nth-child(1)').attr('stroke-width', '1');
+                    $('#chart_div circle:nth-child(1)').attr('stroke', 'gray');
+                    $('#chart_div circle:nth-child(3)').attr('fill', '#666666'); //the circle pointer
+                    $('#chart_div circle:nth-child(3)').attr('stroke', 'white');
+                    $('#chart_div text').attr('fill', 'white');
+                    $('#chart_div text:nth-child(1)').attr('fill', 'white');
+                    $('#chart_div text').attr('left');
+                    $('#chart_div path:nth-child(2)').attr('fill', '#FC6C05');
+                    $('#chart_div path:nth-child(2)').attr('stroke', 'white');
+                    $('#chart_div path:nth-child(2)').attr('fill-opacity', '2');
+                });
+
+                chart.draw(data, fueloptions);
+
+            }
+        </script>
+
+        <style>
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            /*li {
+                float: left;
+                border-right:1px solid #bbb;
+            }*/
+
+            a:link, a:visited, a:hover {
+                color: white;
+            }
+
+            li:default{
+                border-right: none;
+            }
+
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            li a:hover:not(.active) {
+                background-color: #111;
+            }
+
+            .active {
+                background-color: #4CAF50;
+            }
+
+            li h2 {
+
+                text-align: left;
+                text-decoration: none;
+                color: white;
+
+            }
+        </style>
     </head>
-    
-    <body>
-        <div id="container" align=center">
+
+    <body>  
+        <ul> 
+            <li style="float:right"><a href="#about">About</a></li>
+            <li style="float:right"><a href="#video">Video</a></li>
+            <li style="float:right"><a href="advanced.html">Advanced</a></li>
+            <li style="float:right"><a class="Dashboard" href="#index.html">Dashboard</a></li>
+            <li><h2>Oracle Jet - Bloodhound</h2></li>
+        </ul>
+
+
+        <div id="container" align=center>
             <table align="center">
                 <td>
-                    <h2>BLOODHOUND JET</h2>
-                </td>
-                <td>
-                    <img src="css/images/BloodhoundLogo.png" style="width:80px;height:105px;">
-                </td>
-            </table>
-        <table align="center">
-  <tr>
-          <td>
-            <div id="FrontTempBrake" title="Value: 60<br>Thresholds: Low 33, Medium 67, High 100"
-		data-bind="ojComponent: {
+                    <!--                    <h2>BLOODHOUND JET</h2>
+                                    </td>
+                                    <td>
+                                        <img src="css/images/BloodhoundLogo.png" style="width:80px;height:105px;">
+                                    </td>
+                                </table>-->
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <div id="FrontTempBrake" title="Value: 60<br>Thresholds: Low 33, Medium 67, High 100"
+                                     data-bind="ojComponent: {
 		  component: 'ojStatusMeterGauge', 
 		  min: 0, 
 		  max: 100, 
@@ -167,16 +222,16 @@ $('#chart_div path:nth-child(2)').attr('fill-opacity', '2');
 		  plotArea: {rendered: 'on'},
 		  readOnly: false
 		 }" 
-		 style=
-		  "display: inline-block;
-                  margin-top:5px;
-		  margin-bottom:5px;
-		  margin-right:5px;
-		  width:40px;
-                  height:440px;">
-        </div>
-            <div id="BackTempBrake" title="Value: 60<br>Thresholds: Low 33, Medium 67, High 100"
-		data-bind="ojComponent: {
+                                     style=
+                                     "display: inline-block;
+                                     margin-top:5px;
+                                     margin-bottom:5px;
+                                     margin-right:5px;
+                                     width:40px;
+                                     height:440px;">
+                                </div>
+                                <div id="BackTempBrake" title="Value: 60<br>Thresholds: Low 33, Medium 67, High 100"
+                                     data-bind="ojComponent: {
 		  component: 'ojStatusMeterGauge', 
 		  min: 0, 
 		  max: 100, 
@@ -188,23 +243,23 @@ $('#chart_div path:nth-child(2)').attr('fill-opacity', '2');
 		  plotArea: {rendered: 'on'},
 		  readOnly: false
 		 }" 
-		 style=
-		  "display: inline-block;
-                   margin-top:5px;
-		   margin-bottom:5px;
-		   margin-right:5px;
-		   width:40px;
-                   height:440px;">
-        </div>  
-      </td>
-          <td>
-  <div id="chart_div" style="width: 400px; padding-top: 5px;" align="right"></div>
-  <div id="speedometer_div" style="width: 400px;"align="center"></div>
-      </td>
-  </tr>
-  <tr>
-      <td colspan="2">
-<div id="gauge5" title="Value: 80<br>Thresholds: Low 33, Medium 67, High 100" data-bind="ojComponent: {
+                                     style=
+                                     "display: inline-block;
+                                     margin-top:5px;
+                                     margin-bottom:5px;
+                                     margin-right:5px;
+                                     width:40px;
+                                     height:440px;">
+                                </div>  
+                            </td>
+                            <td>
+                                <div id="chart_div" style="width: 400px; padding-top: 5px;" align="right"></div>
+                                <div id="speedometer_div" style="width: 400px;"align="center"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div id="gauge5" title="Value: 80<br>Thresholds: Low 33, Medium 67, High 100" data-bind="ojComponent: {
              component: 'ojStatusMeterGauge', 
              min: 0, 
              max: 100, 
@@ -217,14 +272,15 @@ $('#chart_div path:nth-child(2)').attr('fill-opacity', '2');
              thresholdDisplay: 'currentOnly',
              readOnly: false
              }" 
-             style=
-             "margin-top:5px;
-             margin-bottom:5px;
-             height:40px;
-             width:105%;">
-        </div>
-      </td>
-  </tr>
-</table>
-    </body>
-</html>
+                                     style=
+                                     "margin-top:5px;
+                                     margin-bottom:5px;
+                                     height:40px;
+                                     width:105%;">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    </body>
+                    </html>
